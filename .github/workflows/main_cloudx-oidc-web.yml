@@ -9,6 +9,9 @@ on:
       - main
   workflow_dispatch:
 
+env:
+  PROJECT_PATH: WebApp-OpenIDConnect-DotNet.csproj
+
 jobs:
   build:
     runs-on: windows-latest
@@ -24,10 +27,10 @@ jobs:
           dotnet-version: '8.x'
 
       - name: Build with dotnet
-        run: dotnet build --configuration Release
+        run: dotnet build ${{ env.PROJECT_PATH }} --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp"
+        run: dotnet publish ${{ env.PROJECT_PATH }} -c Release -o "${{env.DOTNET_ROOT}}/myapp"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -62,4 +65,3 @@ jobs:
           app-name: 'cloudx-oidc-web'
           slot-name: 'Production'
           package: .
-          
